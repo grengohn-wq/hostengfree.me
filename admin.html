@@ -1,0 +1,1155 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>لوحة الإدارة - خدماتي المتكاملة</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        /* أنماط مخصصة لصفحة الإدارة */
+        body {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .admin-login-container {
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            padding: 3rem;
+            max-width: 400px;
+            width: 90%;
+        }
+        
+        .admin-logo {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+        
+        .admin-logo i {
+            font-size: 4rem;
+            color: #2563eb;
+            margin-bottom: 1rem;
+        }
+        
+        .admin-logo h1 {
+            color: #1f2937;
+            font-size: 1.5rem;
+            margin: 0;
+        }
+        
+        .login-form {
+            width: 100%;
+        }
+        
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+            color: #374151;
+        }
+        
+        .form-group input {
+            width: 100%;
+            padding: 1rem;
+            border: 2px solid #e5e7eb;
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: border-color 0.3s ease;
+        }
+        
+        .form-group input:focus {
+            outline: none;
+            border-color: #2563eb;
+        }
+        
+        .login-btn {
+            width: 100%;
+            background: linear-gradient(135deg, #2563eb 0%, #1e40af 100%);
+            color: white;
+            border: none;
+            padding: 1rem 2rem;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .login-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(37, 99, 235, 0.3);
+        }
+        
+        .error-message {
+            background: #fef2f2;
+            color: #dc2626;
+            padding: 0.75rem;
+            border-radius: 8px;
+            border: 1px solid #fecaca;
+            margin-top: 1rem;
+            display: none;
+        }
+        
+        .success-message {
+            background: #f0fdf4;
+            color: #059669;
+            padding: 0.75rem;
+            border-radius: 8px;
+            border: 1px solid #bbf7d0;
+            margin-top: 1rem;
+            display: none;
+        }
+        
+        .admin-dashboard {
+            display: none;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            width: 95vw;
+            max-width: 1200px;
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+        
+        .dashboard-header {
+            background: linear-gradient(135deg, #2563eb 0%, #1e40af 100%);
+            color: white;
+            padding: 1.5rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .dashboard-title {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .logout-btn {
+            background: rgba(255, 255, 255, 0.2);
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 6px;
+            color: white;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+        
+        .logout-btn:hover {
+            background: rgba(255, 255, 255, 0.3);
+        }
+        
+        .dashboard-content {
+            padding: 2rem;
+        }
+        
+        .tabs {
+            display: flex;
+            border-bottom: 2px solid #e5e7eb;
+            margin-bottom: 2rem;
+        }
+        
+        .tab-btn {
+            padding: 1rem 1.5rem;
+            border: none;
+            background: none;
+            cursor: pointer;
+            border-bottom: 3px solid transparent;
+            transition: all 0.3s;
+            color: #6b7280;
+        }
+        
+        .tab-btn.active {
+            color: #2563eb;
+            border-bottom-color: #2563eb;
+            font-weight: 600;
+        }
+        
+        .tab-panel {
+            display: none;
+        }
+        
+        .tab-panel.active {
+            display: block;
+        }
+        
+        .ads-section {
+            margin-bottom: 2rem;
+            padding: 1.5rem;
+            background: #f8fafc;
+            border-radius: 8px;
+            border: 1px solid #e2e8f0;
+        }
+        
+        .ads-section h3 {
+            color: #1e293b;
+            margin-bottom: 1rem;
+        }
+        
+        .ads-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1rem;
+            margin: 1rem 0;
+        }
+        
+        .switch-container {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin: 1rem 0;
+        }
+        
+        .switch {
+            position: relative;
+            width: 60px;
+            height: 34px;
+        }
+        
+        .switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+        
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #ccc;
+            transition: .4s;
+            border-radius: 34px;
+        }
+        
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 26px;
+            width: 26px;
+            left: 4px;
+            bottom: 4px;
+            background-color: white;
+            transition: .4s;
+            border-radius: 50%;
+        }
+        
+        input:checked + .slider {
+            background-color: #2563eb;
+        }
+        
+        input:checked + .slider:before {
+            transform: translateX(26px);
+        }
+        
+        .action-buttons {
+            display: flex;
+            gap: 1rem;
+            margin-top: 1.5rem;
+            flex-wrap: wrap;
+        }
+        
+        .btn-save {
+            background: #059669;
+            color: white;
+        }
+        
+        .btn-refresh {
+            background: #dc2626;
+            color: white;
+        }
+        
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+        }
+        
+        .stat-card {
+            background: #f8fafc;
+            padding: 1.5rem;
+            border-radius: 8px;
+            border: 1px solid #e2e8f0;
+            text-align: center;
+        }
+        
+        .stat-number {
+            font-size: 2rem;
+            font-weight: bold;
+            color: #2563eb;
+            margin: 0.5rem 0;
+        }
+        
+        .back-to-site {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            background: #6366f1;
+            color: white;
+            border: none;
+            padding: 1rem;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 1.2rem;
+            box-shadow: 0 4px 12px rgba(99, 102, 241, 0.3);
+            transition: all 0.3s ease;
+        }
+        
+        .back-to-site:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(99, 102, 241, 0.4);
+        }
+
+        /* Social Media Controls */
+        .social-controls {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .social-item {
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            padding: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .social-item:hover {
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            border-color: #3b82f6;
+        }
+
+        .social-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 0.75rem;
+        }
+
+        .social-info {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            font-weight: 600;
+            color: #1f2937;
+        }
+
+        .social-config input {
+            width: 100%;
+            padding: 0.75rem;
+            border: 1px solid #d1d5db;
+            border-radius: 6px;
+            font-size: 0.875rem;
+            transition: border-color 0.2s ease;
+        }
+
+        .social-config input:focus {
+            outline: none;
+            border-color: #3b82f6;
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+        }
+
+        .social-config input:disabled {
+            background-color: #f3f4f6;
+            color: #9ca3af;
+        }
+
+        /* Toggle Switch */
+        .toggle-switch {
+            position: relative;
+            display: inline-block;
+            width: 50px;
+            height: 24px;
+        }
+
+        .toggle-switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        .toggle-slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #ccc;
+            transition: 0.3s;
+            border-radius: 24px;
+        }
+
+        .toggle-slider:before {
+            position: absolute;
+            content: "";
+            height: 18px;
+            width: 18px;
+            left: 3px;
+            bottom: 3px;
+            background-color: white;
+            transition: 0.3s;
+            border-radius: 50%;
+        }
+
+        input:checked + .toggle-slider {
+            background-color: #10b981;
+        }
+
+        input:checked + .toggle-slider:before {
+            transform: translateX(26px);
+        }
+
+        /* Social Preview */
+        .social-preview {
+            background: #f0f9ff;
+            border: 1px solid #0ea5e9;
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin-top: 1rem;
+        }
+
+        .social-preview h4 {
+            color: #0c4a6e;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .preview-links {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.75rem;
+        }
+
+        .preview-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem 1rem;
+            background: white;
+            border: 1px solid #0ea5e9;
+            border-radius: 6px;
+            text-decoration: none;
+            color: #0c4a6e;
+            font-size: 0.875rem;
+            transition: all 0.2s ease;
+        }
+
+        .preview-link:hover {
+            background: #0ea5e9;
+            color: white;
+            transform: translateY(-1px);
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            .social-header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 0.5rem;
+            }
+            
+            .preview-links {
+                flex-direction: column;
+            }
+            
+            .preview-link {
+                justify-content: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- نموذج تسجيل الدخول -->
+    <div class="admin-login-container" id="loginContainer">
+        <div class="admin-logo">
+            <i class="fas fa-shield-alt"></i>
+            <h1>لوحة إدارة الموقع</h1>
+            <p style="color: #6b7280; margin: 0.5rem 0;">تسجيل دخول آمن</p>
+        </div>
+        
+        <form class="login-form" id="adminLoginForm">
+            <div class="form-group">
+                <label for="username"><i class="fas fa-user"></i> اسم المستخدم</label>
+                <input type="text" id="username" name="username" required placeholder="mosap">
+            </div>
+            
+            <div class="form-group">
+                <label for="password"><i class="fas fa-lock"></i> كلمة المرور</label>
+                <input type="password" id="password" name="password" required placeholder="mosap@123123">
+            </div>
+            
+            <button type="submit" class="login-btn">
+                <i class="fas fa-sign-in-alt"></i> دخول الإدارة
+            </button>
+            
+            <div class="error-message" id="errorMessage">
+                <i class="fas fa-exclamation-triangle"></i>
+                <span id="errorText">بيانات الدخول غير صحيحة</span>
+            </div>
+            
+            <div class="success-message" id="successMessage">
+                <i class="fas fa-check-circle"></i>
+                <span>تم تسجيل الدخول بنجاح</span>
+            </div>
+        </form>
+        
+        <div style="text-align: center; margin-top: 2rem; color: #6b7280; font-size: 0.875rem;">
+            <p>بيانات الدخول الافتراضية:</p>
+            <p><strong>المستخدم:</strong> mosap | <strong>كلمة المرور:</strong> mosap@123123</p>
+        </div>
+    </div>
+    
+    <!-- لوحة الإدارة -->
+    <div class="admin-dashboard" id="adminDashboard">
+        <div class="dashboard-header">
+            <div class="dashboard-title">
+                <i class="fas fa-tachometer-alt"></i>
+                <h2>لوحة إدارة خدماتي المتكاملة</h2>
+            </div>
+            <div style="display: flex; align-items: center; gap: 1rem;">
+                <span id="welcomeUser">مرحباً، mosap</span>
+                <button class="logout-btn" id="logoutBtn">
+                    <i class="fas fa-sign-out-alt"></i> خروج
+                </button>
+            </div>
+        </div>
+        
+        <div class="dashboard-content">
+            <div class="tabs">
+                <button class="tab-btn active" data-tab="ads">إدارة الإعلانات</button>
+                <button class="tab-btn" data-tab="content">إدارة المحتوى</button>
+                <button class="tab-btn" data-tab="social">وسائل التواصل</button>
+                <button class="tab-btn" data-tab="stats">الإحصائيات</button>
+                <button class="tab-btn" data-tab="settings">الإعدادات</button>
+            </div>
+            
+            <!-- تبويب إدارة الإعلانات -->
+            <div class="tab-panel active" id="ads-tab">
+                <div class="ads-section">
+                    <h3><i class="fab fa-google"></i> إعدادات Google AdSense</h3>
+                    
+                    <div class="form-group">
+                        <label for="adsenseClientId">معرف العميل (Client ID):</label>
+                        <input type="text" id="adsenseClientId" placeholder="ca-pub-XXXXXXXXXX" value="ca-pub-XXXXXXXXXX">
+                    </div>
+                    
+                    <h4>فتحات الإعلانات (Ad Slots):</h4>
+                    <div class="ads-grid">
+                        <div class="form-group">
+                            <label for="headerSlot">إعلان الهيدر:</label>
+                            <input type="text" id="headerSlot" placeholder="XXXXXXXXXX" value="1234567890">
+                        </div>
+                        <div class="form-group">
+                            <label for="sidebarSlot">إعلان الشريط الجانبي:</label>
+                            <input type="text" id="sidebarSlot" placeholder="XXXXXXXXXX" value="1234567891">
+                        </div>
+                        <div class="form-group">
+                            <label for="betweenSlot">إعلان بين الأقسام:</label>
+                            <input type="text" id="betweenSlot" placeholder="XXXXXXXXXX" value="1234567892">
+                        </div>
+                        <div class="form-group">
+                            <label for="footerSlot">إعلان الفوتر:</label>
+                            <input type="text" id="footerSlot" placeholder="XXXXXXXXXX" value="1234567893">
+                        </div>
+                    </div>
+                    
+                    <div class="switch-container">
+                        <label class="switch">
+                            <input type="checkbox" id="adsToggle" checked>
+                            <span class="slider"></span>
+                        </label>
+                        <span>تفعيل عرض الإعلانات</span>
+                    </div>
+                    
+                    <div class="action-buttons">
+                        <button class="btn btn-primary btn-save" id="saveAdsBtn">
+                            <i class="fas fa-save"></i> حفظ إعدادات الإعلانات
+                        </button>
+                        <button class="btn btn-secondary btn-refresh" id="refreshAdsBtn">
+                            <i class="fas fa-sync-alt"></i> تحديث الإعلانات
+                        </button>
+                        <button class="btn btn-outline" id="previewAdsBtn">
+                            <i class="fas fa-eye"></i> معاينة الإعلانات
+                        </button>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- تبويب إدارة المحتوى -->
+            <div class="tab-panel" id="content-tab">
+                <div class="ads-section">
+                    <h3><i class="fas fa-edit"></i> إدارة محتوى الموقع</h3>
+                    
+                    <div class="form-group">
+                        <label for="siteTitle">عنوان الموقع:</label>
+                        <input type="text" id="siteTitle" value="خدماتي المتكاملة">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="siteDescription">وصف الموقع:</label>
+                        <textarea id="siteDescription" rows="3" style="width: 100%; padding: 1rem; border: 2px solid #e5e7eb; border-radius: 8px;">موقع لتقديم خدمات متعددة للعملاء</textarea>
+                    </div>
+                    
+                    <div class="action-buttons">
+                        <button class="btn btn-primary btn-save">
+                            <i class="fas fa-save"></i> حفظ المحتوى
+                        </button>
+                        <button class="btn btn-outline">
+                            <i class="fas fa-plus"></i> إضافة خدمة جديدة
+                        </button>
+                        <button class="btn btn-outline">
+                            <i class="fas fa-images"></i> إدارة الصور
+                        </button>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- تبويب وسائل التواصل الاجتماعي -->
+            <div class="tab-panel" id="social-tab">
+                <div class="ads-section">
+                    <h3><i class="fas fa-share-alt"></i> إدارة وسائل التواصل الاجتماعي</h3>
+                    
+                    <div class="social-controls">
+                        <!-- Facebook -->
+                        <div class="social-item">
+                            <div class="social-header">
+                                <div class="social-info">
+                                    <i class="fab fa-facebook" style="color: #1877f2; font-size: 1.5rem;"></i>
+                                    <span>Facebook</span>
+                                </div>
+                                <div class="social-toggle">
+                                    <label class="toggle-switch">
+                                        <input type="checkbox" id="facebook-enabled" checked>
+                                        <span class="toggle-slider"></span>
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="social-config">
+                                <input type="url" id="facebook-url" placeholder="رابط صفحة الفيسبوك" value="https://facebook.com/mypage">
+                            </div>
+                        </div>
+
+                        <!-- Twitter -->
+                        <div class="social-item">
+                            <div class="social-header">
+                                <div class="social-info">
+                                    <i class="fab fa-twitter" style="color: #1da1f2; font-size: 1.5rem;"></i>
+                                    <span>Twitter</span>
+                                </div>
+                                <div class="social-toggle">
+                                    <label class="toggle-switch">
+                                        <input type="checkbox" id="twitter-enabled" checked>
+                                        <span class="toggle-slider"></span>
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="social-config">
+                                <input type="url" id="twitter-url" placeholder="رابط حساب تويتر" value="https://twitter.com/myaccount">
+                            </div>
+                        </div>
+
+                        <!-- Instagram -->
+                        <div class="social-item">
+                            <div class="social-header">
+                                <div class="social-info">
+                                    <i class="fab fa-instagram" style="color: #e4405f; font-size: 1.5rem;"></i>
+                                    <span>Instagram</span>
+                                </div>
+                                <div class="social-toggle">
+                                    <label class="toggle-switch">
+                                        <input type="checkbox" id="instagram-enabled" checked>
+                                        <span class="toggle-slider"></span>
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="social-config">
+                                <input type="url" id="instagram-url" placeholder="رابط حساب الانستغرام" value="https://instagram.com/myaccount">
+                            </div>
+                        </div>
+
+                        <!-- LinkedIn -->
+                        <div class="social-item">
+                            <div class="social-header">
+                                <div class="social-info">
+                                    <i class="fab fa-linkedin" style="color: #0a66c2; font-size: 1.5rem;"></i>
+                                    <span>LinkedIn</span>
+                                </div>
+                                <div class="social-toggle">
+                                    <label class="toggle-switch">
+                                        <input type="checkbox" id="linkedin-enabled" checked>
+                                        <span class="toggle-slider"></span>
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="social-config">
+                                <input type="url" id="linkedin-url" placeholder="رابط حساب LinkedIn" value="https://linkedin.com/in/myprofile">
+                            </div>
+                        </div>
+
+                        <!-- YouTube -->
+                        <div class="social-item">
+                            <div class="social-header">
+                                <div class="social-info">
+                                    <i class="fab fa-youtube" style="color: #ff0000; font-size: 1.5rem;"></i>
+                                    <span>YouTube</span>
+                                </div>
+                                <div class="social-toggle">
+                                    <label class="toggle-switch">
+                                        <input type="checkbox" id="youtube-enabled" checked>
+                                        <span class="toggle-slider"></span>
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="social-config">
+                                <input type="url" id="youtube-url" placeholder="رابط قناة اليوتيوب" value="https://youtube.com/c/mychannel">
+                            </div>
+                        </div>
+
+                        <!-- WhatsApp -->
+                        <div class="social-item">
+                            <div class="social-header">
+                                <div class="social-info">
+                                    <i class="fab fa-whatsapp" style="color: #25d366; font-size: 1.5rem;"></i>
+                                    <span>WhatsApp</span>
+                                </div>
+                                <div class="social-toggle">
+                                    <label class="toggle-switch">
+                                        <input type="checkbox" id="whatsapp-enabled" checked>
+                                        <span class="toggle-slider"></span>
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="social-config">
+                                <input type="tel" id="whatsapp-number" placeholder="رقم الواتساب مع رمز الدولة" value="+966501234567">
+                            </div>
+                        </div>
+
+                        <!-- Telegram -->
+                        <div class="social-item">
+                            <div class="social-header">
+                                <div class="social-info">
+                                    <i class="fab fa-telegram" style="color: #0088cc; font-size: 1.5rem;"></i>
+                                    <span>Telegram</span>
+                                </div>
+                                <div class="social-toggle">
+                                    <label class="toggle-switch">
+                                        <input type="checkbox" id="telegram-enabled">
+                                        <span class="toggle-slider"></span>
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="social-config">
+                                <input type="text" id="telegram-username" placeholder="اسم المستخدم في تلجرام (بدون @)" value="">
+                            </div>
+                        </div>
+
+                        <!-- Snapchat -->
+                        <div class="social-item">
+                            <div class="social-header">
+                                <div class="social-info">
+                                    <i class="fab fa-snapchat" style="color: #fffc00; font-size: 1.5rem;"></i>
+                                    <span>Snapchat</span>
+                                </div>
+                                <div class="social-toggle">
+                                    <label class="toggle-switch">
+                                        <input type="checkbox" id="snapchat-enabled">
+                                        <span class="toggle-slider"></span>
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="social-config">
+                                <input type="text" id="snapchat-username" placeholder="اسم المستخدم في سناب شات" value="">
+                            </div>
+                        </div>
+
+                        <!-- TikTok -->
+                        <div class="social-item">
+                            <div class="social-header">
+                                <div class="social-info">
+                                    <i class="fab fa-tiktok" style="color: #000000; font-size: 1.5rem;"></i>
+                                    <span>TikTok</span>
+                                </div>
+                                <div class="social-toggle">
+                                    <label class="toggle-switch">
+                                        <input type="checkbox" id="tiktok-enabled">
+                                        <span class="toggle-slider"></span>
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="social-config">
+                                <input type="text" id="tiktok-username" placeholder="اسم المستخدم في تيك توك (بدون @)" value="">
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="action-buttons">
+                        <button class="btn btn-primary btn-save" onclick="saveSocialMedia()">
+                            <i class="fas fa-save"></i> حفظ وسائل التواصل
+                        </button>
+                        <button class="btn btn-outline" onclick="resetSocialMedia()">
+                            <i class="fas fa-undo"></i> إعادة تعيين
+                        </button>
+                        <button class="btn btn-outline" onclick="previewSocialLinks()">
+                            <i class="fas fa-eye"></i> معاينة الروابط
+                        </button>
+                    </div>
+
+                    <!-- معاينة الروابط -->
+                    <div class="social-preview" id="social-preview" style="display: none;">
+                        <h4><i class="fas fa-eye"></i> معاينة روابط التواصل</h4>
+                        <div class="preview-links" id="preview-links">
+                            <!-- سيتم ملؤها بـ JavaScript -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- تبويب الإحصائيات -->
+            <div class="tab-panel" id="stats-tab">
+                <div class="ads-section">
+                    <h3><i class="fas fa-chart-bar"></i> إحصائيات الموقع</h3>
+                    
+                    <div class="stats-grid">
+                        <div class="stat-card">
+                            <i class="fas fa-users" style="font-size: 2rem; color: #2563eb; margin-bottom: 0.5rem;"></i>
+                            <h4>زوار اليوم</h4>
+                            <div class="stat-number">156</div>
+                        </div>
+                        <div class="stat-card">
+                            <i class="fas fa-eye" style="font-size: 2rem; color: #059669; margin-bottom: 0.5rem;"></i>
+                            <h4>إجمالي الزوار</h4>
+                            <div class="stat-number">8,542</div>
+                        </div>
+                        <div class="stat-card">
+                            <i class="fas fa-envelope" style="font-size: 2rem; color: #dc2626; margin-bottom: 0.5rem;"></i>
+                            <h4>رسائل التواصل</h4>
+                            <div class="stat-number">23</div>
+                        </div>
+                        <div class="stat-card">
+                            <i class="fas fa-dollar-sign" style="font-size: 2rem; color: #f59e0b; margin-bottom: 0.5rem;"></i>
+                            <h4>أرباح الإعلانات</h4>
+                            <div class="stat-number">$89.50</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- تبويب الإعدادات -->
+            <div class="tab-panel" id="settings-tab">
+                <div class="ads-section">
+                    <h3><i class="fas fa-cog"></i> إعدادات عامة</h3>
+                    
+                    <div class="ads-grid">
+                        <div class="form-group">
+                            <label for="contactEmail">البريد الإلكتروني:</label>
+                            <input type="email" id="contactEmail" value="info@myservices.com">
+                        </div>
+                        <div class="form-group">
+                            <label for="contactPhone">رقم الهاتف:</label>
+                            <input type="tel" id="contactPhone" value="+966 50 123 4567">
+                        </div>
+                        <div class="form-group">
+                            <label for="socialFacebook">رابط فيسبوك:</label>
+                            <input type="url" id="socialFacebook" placeholder="https://facebook.com/page">
+                        </div>
+                        <div class="form-group">
+                            <label for="socialTwitter">رابط تويتر:</label>
+                            <input type="url" id="socialTwitter" placeholder="https://twitter.com/username">
+                        </div>
+                    </div>
+                    
+                    <div class="action-buttons">
+                        <button class="btn btn-primary btn-save">
+                            <i class="fas fa-save"></i> حفظ الإعدادات
+                        </button>
+                        <button class="btn btn-outline">
+                            <i class="fas fa-download"></i> نسخ احتياطي
+                        </button>
+                        <button class="btn btn-secondary">
+                            <i class="fas fa-trash-alt"></i> مسح البيانات المؤقتة
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- زر العودة للموقع -->
+    <button class="back-to-site" id="backToSite" style="display: none;" title="العودة للموقع">
+        <i class="fas fa-home"></i>
+    </button>
+
+    <script>
+        // نظام إدارة الموقع المتقدم
+        class AdminPanel {
+            constructor() {
+                this.isLoggedIn = false;
+                this.settings = {
+                    adsenseClientId: 'ca-pub-XXXXXXXXXX',
+                    adsenseSlots: {
+                        header: '1234567890',
+                        sidebar: '1234567891',
+                        betweenSections: '1234567892',
+                        footer: '1234567893'
+                    },
+                    adsEnabled: true
+                };
+                this.init();
+            }
+
+            init() {
+                this.setupEventListeners();
+                this.loadSettings();
+                this.checkAutoLogin();
+            }
+
+            // إعداد مستمعي الأحداث
+            setupEventListeners() {
+                // تسجيل الدخول
+                document.getElementById('adminLoginForm').addEventListener('submit', (e) => {
+                    e.preventDefault();
+                    this.handleLogin();
+                });
+
+                // تسجيل الخروج
+                document.getElementById('logoutBtn').addEventListener('click', () => {
+                    this.logout();
+                });
+
+                // تبديل التبويبات
+                document.querySelectorAll('.tab-btn').forEach(btn => {
+                    btn.addEventListener('click', () => {
+                        this.switchTab(btn.getAttribute('data-tab'));
+                    });
+                });
+
+                // حفظ إعدادات الإعلانات
+                document.getElementById('saveAdsBtn').addEventListener('click', () => {
+                    this.saveAdSettings();
+                });
+
+                // تحديث الإعلانات
+                document.getElementById('refreshAdsBtn').addEventListener('click', () => {
+                    this.refreshAds();
+                });
+
+                // معاينة الإعلانات
+                document.getElementById('previewAdsBtn').addEventListener('click', () => {
+                    this.previewAds();
+                });
+
+                // تبديل تفعيل الإعلانات
+                document.getElementById('adsToggle').addEventListener('change', (e) => {
+                    this.settings.adsEnabled = e.target.checked;
+                    this.saveSettings();
+                });
+
+                // العودة للموقع
+                document.getElementById('backToSite').addEventListener('click', () => {
+                    window.location.href = 'index.html';
+                });
+            }
+
+            // فحص تسجيل الدخول التلقائي
+            checkAutoLogin() {
+                const isLoggedIn = sessionStorage.getItem('adminLoggedIn');
+                if (isLoggedIn === 'true') {
+                    this.showDashboard();
+                }
+            }
+
+            // معالجة تسجيل الدخول
+            handleLogin() {
+                const username = document.getElementById('username').value;
+                const password = document.getElementById('password').value;
+                const errorMsg = document.getElementById('errorMessage');
+                const successMsg = document.getElementById('successMessage');
+
+                // تشفير بسيط للتحقق
+                const hashedInput = this.hashCredentials(username, password);
+                const expectedHash = this.hashCredentials('mosap', 'mosap@123123');
+
+                if (hashedInput === expectedHash) {
+                    // نجح تسجيل الدخول
+                    successMsg.style.display = 'block';
+                    errorMsg.style.display = 'none';
+                    
+                    sessionStorage.setItem('adminLoggedIn', 'true');
+                    sessionStorage.setItem('adminUser', username);
+                    
+                    setTimeout(() => {
+                        this.showDashboard();
+                    }, 1000);
+                } else {
+                    // فشل تسجيل الدخول
+                    errorMsg.style.display = 'block';
+                    successMsg.style.display = 'none';
+                    
+                    // هز النموذج
+                    const container = document.getElementById('loginContainer');
+                    container.style.animation = 'shake 0.5s';
+                    setTimeout(() => {
+                        container.style.animation = '';
+                    }, 500);
+                }
+            }
+
+            // تشفير بيانات الاعتماد
+            hashCredentials(username, password) {
+                const combined = username + ':' + password + ':secure_salt_2025';
+                let hash = 0;
+                for (let i = 0; i < combined.length; i++) {
+                    const char = combined.charCodeAt(i);
+                    hash = ((hash << 5) - hash) + char;
+                    hash = hash & hash;
+                }
+                return hash.toString();
+            }
+
+            // عرض لوحة الإدارة
+            showDashboard() {
+                document.getElementById('loginContainer').style.display = 'none';
+                document.getElementById('adminDashboard').style.display = 'block';
+                document.getElementById('backToSite').style.display = 'block';
+                this.isLoggedIn = true;
+                
+                // تحديث اسم المستخدم
+                const username = sessionStorage.getItem('adminUser') || 'المدير';
+                document.getElementById('welcomeUser').textContent = `مرحباً، ${username}`;
+            }
+
+            // تسجيل الخروج
+            logout() {
+                sessionStorage.removeItem('adminLoggedIn');
+                sessionStorage.removeItem('adminUser');
+                location.reload();
+            }
+
+            // تبديل التبويبات
+            switchTab(tabName) {
+                // إزالة النشط من جميع التبويبات
+                document.querySelectorAll('.tab-btn').forEach(btn => {
+                    btn.classList.remove('active');
+                });
+                document.querySelectorAll('.tab-panel').forEach(panel => {
+                    panel.classList.remove('active');
+                });
+
+                // تفعيل التبويب المحدد
+                document.querySelector(`[data-tab="${tabName}"]`).classList.add('active');
+                document.getElementById(`${tabName}-tab`).classList.add('active');
+            }
+
+            // حفظ إعدادات الإعلانات
+            saveAdSettings() {
+                this.settings.adsenseClientId = document.getElementById('adsenseClientId').value;
+                this.settings.adsenseSlots = {
+                    header: document.getElementById('headerSlot').value,
+                    sidebar: document.getElementById('sidebarSlot').value,
+                    betweenSections: document.getElementById('betweenSlot').value,
+                    footer: document.getElementById('footerSlot').value
+                };
+
+                this.saveSettings();
+                this.showNotification('تم حفظ إعدادات الإعلانات بنجاح!', 'success');
+            }
+
+            // تحديث الإعلانات
+            refreshAds() {
+                this.showNotification('تم تحديث الإعلانات!', 'success');
+            }
+
+            // معاينة الإعلانات
+            previewAds() {
+                window.open('index.html', '_blank');
+            }
+
+            // حفظ الإعدادات
+            saveSettings() {
+                localStorage.setItem('adminSettings', JSON.stringify(this.settings));
+            }
+
+            // تحميل الإعدادات
+            loadSettings() {
+                const saved = localStorage.getItem('adminSettings');
+                if (saved) {
+                    this.settings = { ...this.settings, ...JSON.parse(saved) };
+                    this.updateFormValues();
+                }
+            }
+
+            // تحديث قيم النموذج
+            updateFormValues() {
+                document.getElementById('adsenseClientId').value = this.settings.adsenseClientId;
+                document.getElementById('headerSlot').value = this.settings.adsenseSlots.header;
+                document.getElementById('sidebarSlot').value = this.settings.adsenseSlots.sidebar;
+                document.getElementById('betweenSlot').value = this.settings.adsenseSlots.betweenSections;
+                document.getElementById('footerSlot').value = this.settings.adsenseSlots.footer;
+                document.getElementById('adsToggle').checked = this.settings.adsEnabled;
+            }
+
+            // عرض الإشعارات
+            showNotification(message, type = 'success') {
+                const notification = document.createElement('div');
+                notification.className = `notification ${type}`;
+                notification.innerHTML = `
+                    <div style="background: ${type === 'success' ? '#10b981' : '#dc2626'}; color: white; padding: 1rem 2rem; border-radius: 8px; position: fixed; top: 20px; left: 50%; transform: translateX(-50%); z-index: 10000; box-shadow: 0 10px 30px rgba(0,0,0,0.2);">
+                        <i class="fas fa-${type === 'success' ? 'check-circle' : 'exclamation-triangle'}"></i>
+                        ${message}
+                    </div>
+                `;
+                
+                document.body.appendChild(notification);
+                
+                setTimeout(() => {
+                    notification.remove();
+                }, 3000);
+            }
+        }
+
+        // إضافة أنماط التحريك
+        const animationStyles = document.createElement('style');
+        animationStyles.textContent = `
+            @keyframes shake {
+                0%, 100% { transform: translateX(0); }
+                25% { transform: translateX(-10px); }
+                75% { transform: translateX(10px); }
+            }
+            
+            .notification {
+                animation: slideDown 0.3s ease;
+            }
+            
+            @keyframes slideDown {
+                from { transform: translate(-50%, -100%); opacity: 0; }
+                to { transform: translate(-50%, 0); opacity: 1; }
+            }
+        `;
+        document.head.appendChild(animationStyles);
+
+        // تهيئة لوحة الإدارة
+        document.addEventListener('DOMContentLoaded', () => {
+            window.adminPanel = new AdminPanel();
+            console.log('🔐 لوحة الإدارة جاهزة');
+        });
+    </script>
+</body>
+</html>
