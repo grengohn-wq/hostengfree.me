@@ -1,4 +1,3 @@
-google.com, pub-2108027030250763, DIRECT, f08c47fec0942fa0
 pubfuture.com, 690f915490e9e635798392f0, DIRECT
 152media.com, 152, DIRECT
 152media.com, 152, RESELLER
